@@ -258,6 +258,7 @@
             <div class="exercise-title" id="exercise-title">Laden...</div>
             <div class="exercise-details" id="exercise-details"></div>
             <div class="exercise-desc" id="exercise-desc"></div>
+            <div id="side-switch-hint" style="display:none; font-size:0.82rem; font-family:'DM Mono',monospace; color:var(--teal); margin-bottom:10px; letter-spacing:0.5px;">Seitenwechsel bei Halbzeit</div>
             <div class="timer-display" id="timer-display">05:00</div>
             <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
             <div class="btn-grid">
@@ -294,75 +295,74 @@
 const plans = {
     tobsi: {
         totalTime: '30 Min',
-        steps: [
-            { phase:'warmup', phaseName:'Warm-up', title:'Allg. Aufwärmen', details:'Zeit: 5 Minuten', desc:'Laufen auf der Stelle, Armkreisen, lockere Kniebeugen, Ausfallschritte & Rumpfbeugen.', duration:300, focus:'Gelenke & Puls' },
-            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'1. Goblet Squats', details:'10–12 Wdh. · 10 kg', desc:'Kettlebell vor der Brust halten. Tief kontrolliert beugen, Knie nach außen schieben.', duration:45, focus:'Beine & Po' },
-            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Tief durchatmen, bereitmachen für Liegestütze.', duration:30, focus:'Erholung' },
-            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'2. Liegestütze', details:'8–12 Wdh. · Bodyweight', desc:'Körper steif wie ein Brett. Brust fast zum Boden bringen. Ggf. Hände erhöht aufstellen.', duration:45, focus:'Brust & Arme' },
-            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Kurze Erholung. Danach folgt Kreuzheben mit der 10 kg Kugel.', duration:30, focus:'Erholung' },
-            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'3. Kreuzheben', details:'12 Wdh. · 10 kg', desc:'Bewegung aus der Hüfte. Rücken kerzengerade lassen. Po beim Aufstehen fest anspannen.', duration:45, focus:'Rückseite & Po' },
-            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Bereitmachen für einarmiges Rudern.', duration:30, focus:'Erholung' },
-            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'4. Einarmiges Rudern', details:'8–10 Wdh. pro Seite · 10 kg / 6 kg', desc:'Stabil nach vorne beugen. Ellenbogen eng am Körper nach oben/hinten ziehen.', duration:60, focus:'Oberer Rücken' },
-            { phase:'pause', phaseName:'Rundenpause', title:'Große Rundenpause', details:'60 Sek.', desc:'Trink einen Schluck Wasser. Danach Block A noch 2× wiederholen (Schritte 2–8).', duration:60, focus:'Erholung' },
-            { phase:'blockb', phaseName:'Block B · AMRAP', title:'Finisher (8 Min)', details:'Fortlaufender Timer · 8 Min', desc:'Wechsle ab: 15 KB-Swings (10 kg) → 8 Overhead Presses je Seite (6 kg). So viele Runden wie möglich!', duration:480, focus:'Fettverbrennung' },
-            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen & Erholen', details:'3–4 Min', desc:'Puls senken. Beine auslockern, Brust aufdehnen, tief in den Bauch einatmen.', duration:200, focus:'Regeneration' }
-        ]
+        maxRounds: 3,
+        roundSteps: [
+            { phase:'blocka', phaseName:'Zirkel', title:'1. Goblet Squat', details:'10–12 Wdh. · 10 kg', desc:'Kettlebell vor der Brust halten. Tief kontrolliert beugen, Knie nach außen schieben. Rücken gerade.', duration:45, focus:'Beine & Po' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'2. Liegestütze', details:'8–12 Wdh. · Bodyweight', desc:'Körper steif wie ein Brett. Brust fast zum Boden bringen. Hände ggf. erhöht aufstellen.', duration:45, focus:'Brust & Trizeps' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'3. Kreuzheben', details:'12 Wdh. · 10 kg', desc:'Bewegung aus der Hüfte. Rücken kerzengerade, Po beim Aufstehen fest anspannen.', duration:45, focus:'Rückseite & Po' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'4. Overhead Press', details:'8–10 Wdh. pro Seite · 6 kg', desc:'Aufrecht stehen, Po anspannen. KB sauber über den Kopf drücken. Kein Hohlkreuz!', duration:50, focus:'Schultern & Core' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'5. Einarmiges Rudern', details:'8–10 Wdh. pro Seite · 10 kg', desc:'Stabil nach vorne beugen, eine Hand stützt sich ab. Ellenbogen eng am Körper Richtung Bauchnabel ziehen.', duration:60, focus:'Oberer Rücken' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'6. KB Swing', details:'15 Wdh. · 10 kg', desc:'Explosive Hüftstreckung – Kraft kommt NICHT aus den Armen. KB zwischen die Beine pendeln, dann aus der Hüfte schnellen.', duration:45, focus:'Po & Cardio' },
+            { phase:'pause', phaseName:'Pause', title:'Kurze Pause', details:'15 Sek.', desc:'Trinken, nächste Übung vorbereiten.', duration:15, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Zirkel', title:'7. KB Halo', details:'6× pro Richtung · 6 kg', desc:'Aufrechter Stand, Bauch fest. KB eng um den Kopf kreisen lassen – langsam und kontrolliert. Aktive Erholung.', duration:40, focus:'Schultern & Mobilität' },
+        ],
+        warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'5 Minuten', desc:'Laufen auf der Stelle, Armkreisen, lockere Kniebeugen, Ausfallschritte & Rumpfbeugen.', duration:300, focus:'Gelenke & Puls' },
+        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen & Erholen', details:'3–4 Min', desc:'Puls senken. Beine auslockern, Brust aufdehnen, tief in den Bauch einatmen.', duration:200, focus:'Regeneration' }
     },
     briddi_tag1: {
         totalTime: '20 Min',
-        steps: [
-            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Arme kreisen.', duration:120, focus:'Vorbereitung' },
-            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'1. KB Kreuzheben', details:'10–12 Wdh.', desc:'Hüfte nach hinten schieben, Rücken gerade. Kraft kommt aus Po und Beinen. Kettlebell zwischen den Füßen.', duration:40, focus:'Po & Rückseite' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'2. Liegestütze erhöht', details:'8–10 Wdh.', desc:'Hände auf Couch oder Wand. Körper bildet eine gerade Linie. Bauch fest anspannen.', duration:40, focus:'Brust & Schultern' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'3. Goblet Squat', details:'8–10 Wdh.', desc:'Kettlebell eng vor der Brust halten. Tief in die Kniebeuge gehen, aufrechter Rücken.', duration:40, focus:'Oberschenkel & Rumpf' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'4. Tote Käfer', details:'5× pro Seite', desc:'Rückenlage, Rücken platt auf Boden drücken. Diagonal Arm und Bein strecken, knapp über dem Boden halten.', duration:40, focus:'Bauch & Stabilität' },
-            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
-            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Tief durchatmen, Beine auslockern, Rücken dehnen.', duration:150, focus:'Regeneration' }
-        ]
+        maxRounds: 3,
+        roundSteps: [
+            { phase:'tag1', phaseName:'Tag 1', title:'1. KB Kreuzheben', details:'10–12 Wdh.', desc:'Hüfte nach hinten schieben, Rücken gerade. Kraft kommt aus Po und Beinen. KB zwischen den Füßen.', duration:40, focus:'Po & Rückseite' },
+            { phase:'tag1', phaseName:'Tag 1', title:'2. Liegestütze erhöht', details:'8–10 Wdh.', desc:'Hände auf Couch oder Wand. Körper bildet eine gerade Linie. Bauch fest anspannen.', duration:40, focus:'Brust & Schultern' },
+            { phase:'tag1', phaseName:'Tag 1', title:'3. Goblet Squat', details:'8–10 Wdh.', desc:'KB eng vor der Brust halten. Tief in die Kniebeuge gehen, aufrechter Rücken.', duration:40, focus:'Oberschenkel & Rumpf' },
+            { phase:'tag1', phaseName:'Tag 1', title:'4. Tote Käfer', details:'5× pro Seite', desc:'Rückenlage, Rücken platt auf Boden drücken. Diagonal Arm und Bein strecken, knapp über dem Boden halten.', duration:40, focus:'Bauch & Stabilität', sideSwitch: true },
+        ],
+        warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Arme kreisen.', duration:120, focus:'Vorbereitung' },
+        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Tief durchatmen, Beine auslockern, Rücken dehnen.', duration:150, focus:'Regeneration' }
     },
     briddi_tag2: {
         totalTime: '20 Min',
-        steps: [
-            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Schultern kreisen, Hüfte kreisen, locker bewegen.', duration:120, focus:'Vorbereitung' },
-            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'1. Einarm. KB-Rudern', details:'10 Wdh. pro Seite', desc:'Ausfallschritt, eine Hand stützt sich ab. Rücken gerade, Ellenbogen nah am Körper Richtung Bauchnabel ziehen.', duration:50, focus:'Oberer Rücken' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'2. Beckenheben', details:'12–15 Wdh.', desc:'Rückenlage, Füße aufstellen. Becken hochdrücken und Po oben kurz fest anspannen.', duration:40, focus:'Po & Hüfte' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'3. KB Halo', details:'6× pro Richtung', desc:'Aufrechter Stand, Bauch fest. Kettlebell eng wie einen Heiligenschein um den Kopf kreisen lassen.', duration:40, focus:'Schultern & Mobilität' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'4. Unterarmstütz', details:'20–30 Sek. halten', desc:'Auf Unterarmen und Fußspitzen stützen. Kein Hohlkreuz, Bauch aktiv einziehen. Atmen nicht vergessen!', duration:30, focus:'Core & Rumpf' },
-            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
-            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Brust aufdehnen, Schultern lockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
-        ]
+        maxRounds: 3,
+        roundSteps: [
+            { phase:'tag2', phaseName:'Tag 2', title:'1. Einarm. KB-Rudern', details:'10 Wdh. pro Seite', desc:'Ausfallschritt, eine Hand stützt sich ab. Rücken gerade, Ellenbogen nah am Körper Richtung Bauchnabel ziehen.', duration:50, focus:'Oberer Rücken', sideSwitch: true },
+            { phase:'tag2', phaseName:'Tag 2', title:'2. Beckenheben', details:'12–15 Wdh.', desc:'Rückenlage, Füße aufstellen. Becken hochdrücken und Po oben kurz fest anspannen.', duration:40, focus:'Po & Hüfte' },
+            { phase:'tag2', phaseName:'Tag 2', title:'3. KB Halo', details:'6× pro Richtung', desc:'Aufrechter Stand, Bauch fest. KB eng wie einen Heiligenschein um den Kopf kreisen lassen.', duration:40, focus:'Schultern & Mobilität' },
+            { phase:'tag2', phaseName:'Tag 2', title:'4. Unterarmstütz', details:'20–30 Sek. halten', desc:'Auf Unterarmen und Fußspitzen stützen. Kein Hohlkreuz, Bauch aktiv einziehen. Atmen nicht vergessen!', duration:30, focus:'Core & Rumpf' },
+        ],
+        warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Schultern kreisen, Hüfte kreisen, locker bewegen.', duration:120, focus:'Vorbereitung' },
+        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Brust aufdehnen, Schultern lockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
     },
     briddi_tag3: {
         totalTime: '20 Min',
-        steps: [
-            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Hüfte kreisen, sanft mobilisieren.', duration:120, focus:'Vorbereitung' },
-            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'1. Ausfallschritte hinten', details:'8× pro Bein', desc:'Großer Schritt nach hinten, hinteres Knie Richtung Boden senken. Nach hinten ist knieschonender als nach vorne.', duration:50, focus:'Beine & Balance' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'2. KB Koffer-Tragen', details:'30 Sek. pro Seite', desc:'Kettlebell in einer Hand wie einen schweren Koffer. Langsam gehen, Oberkörper bleibt völlig gerade – nicht zur Seite kippen.', duration:30, focus:'Seitliche Bauchmuskulatur' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Seite wechseln, kurz pausieren.', duration:30, focus:'Erholung' },
-            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'3. Bird-Dog', details:'8× pro Seite', desc:'Auf Händen und Knien. Gleichzeitig rechten Arm und linkes Bein kontrolliert in die Länge strecken. Kurz halten, zurückführen.', duration:50, focus:'Rücken & Stabilität' },
-            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
-            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'4. KB Schlaufe (8er)', details:'45 Sek.', desc:'Weite Kniebeugen-Position. Kettlebell in Achterschleife durch die Beine führen und von Hand zu Hand übergeben.', duration:45, focus:'Koordination & Beine' },
-            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
-            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Puls senken, Beine auslockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
-        ]
+        maxRounds: 3,
+        roundSteps: [
+            { phase:'tag3', phaseName:'Tag 3', title:'1. Ausfallschritte hinten', details:'8× pro Bein', desc:'Großer Schritt nach hinten, hinteres Knie Richtung Boden senken. Nach hinten ist knieschonender als nach vorne.', duration:50, focus:'Beine & Balance', sideSwitch: true },
+            { phase:'tag3', phaseName:'Tag 3', title:'2. KB Koffer-Tragen', details:'30 Sek. pro Seite', desc:'KB in einer Hand wie einen schweren Koffer. Langsam gehen, Oberkörper bleibt völlig gerade – nicht zur Seite kippen.', duration:30, focus:'Seitliche Bauchmuskulatur', sideSwitch: true },
+            { phase:'tag3', phaseName:'Tag 3', title:'3. Bird-Dog', details:'8× pro Seite', desc:'Auf Händen und Knien. Gleichzeitig rechten Arm und linkes Bein kontrolliert in die Länge strecken. Kurz halten, zurückführen.', duration:50, focus:'Rücken & Stabilität', sideSwitch: true },
+            { phase:'tag3', phaseName:'Tag 3', title:'4. KB Schlaufe (8er)', details:'45 Sek.', desc:'Weite Kniebeugen-Position. KB in Achterschleife durch die Beine führen und von Hand zu Hand übergeben.', duration:45, focus:'Koordination & Beine' },
+        ],
+        warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Hüfte kreisen, sanft mobilisieren.', duration:120, focus:'Vorbereitung' },
+        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Puls senken, Beine auslockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
     }
 };
 
 let currentProfile = null;
 let currentPlanKey = null;
 let currentStepIdx = 0;
+let currentRound = 1;
 let timerInterval = null;
 let timeLeft = 0;
 let isRunning = false;
 let wakeLock = null;
 let audioCtx = null;
+let currentPhase = 'warmup'; // warmup | round | roundbreak | cooldown
+let sideSwitchFired = false;
 
 function showScreen(id) {
     ['screen-profile','screen-days','screen-workout'].forEach(s => {
@@ -373,23 +373,25 @@ function showScreen(id) {
 
 function selectProfile(who) {
     currentProfile = who;
-    if (who === 'tobsi') {
-        startWorkout('tobsi', null);
-    } else {
-        showScreen('screen-days');
-    }
+    if (who === 'tobsi') startWorkout('tobsi', null);
+    else showScreen('screen-days');
 }
 
 function startWorkout(profile, day) {
     currentProfile = profile;
     currentPlanKey = profile === 'tobsi' ? 'tobsi' : ('briddi_' + day);
     currentStepIdx = 0;
+    currentRound = 1;
+    currentPhase = 'warmup';
+    sideSwitchFired = false;
     stopTimer();
     showScreen('screen-workout');
     const chip = document.getElementById('profile-chip');
     chip.textContent = profile === 'tobsi' ? 'Tobsi' : 'Briddi';
     chip.className = 'profile-chip ' + (profile === 'tobsi' ? 'chip-tobsi' : 'chip-briddi');
     document.getElementById('stat-total').textContent = plans[currentPlanKey].totalTime;
+    document.getElementById('btn-timer').classList.remove('hidden');
+    document.getElementById('btn-next').onclick = nextStep;
     updateUI();
 }
 
@@ -402,27 +404,85 @@ function goBack(to) {
     }
 }
 
+function getCurrentStep() {
+    const plan = plans[currentPlanKey];
+    if (currentPhase === 'warmup') return plan.warmup;
+    if (currentPhase === 'cooldown') return plan.cooldown;
+    if (currentPhase === 'round') return plan.roundSteps[currentStepIdx];
+    // roundbreak
+    return {
+        phase: 'pause', phaseName: 'Rundenpause',
+        title: currentRound < plan.maxRounds ? `Runde ${currentRound} geschafft!` : 'Letzter Durchgang!',
+        details: 'Kurz erholen',
+        desc: currentRound < plan.maxRounds
+            ? `Gut trinken! Gleich startet Runde ${currentRound + 1} von ${plan.maxRounds}.`
+            : 'Das war die letzte Runde. Jetzt noch Cool-down und du bist fertig!',
+        duration: 60, focus: 'Erholung'
+    };
+}
+
 function updateUI() {
     const plan = plans[currentPlanKey];
-    const step = plan.steps[currentStepIdx];
+    const step = getCurrentStep();
+    sideSwitchFired = false;
+
     document.getElementById('exercise-title').textContent = step.title;
     document.getElementById('exercise-details').textContent = step.details;
     document.getElementById('exercise-desc').textContent = step.desc;
-    document.getElementById('stat-step').textContent = (currentStepIdx + 1) + '/' + plan.steps.length;
     document.getElementById('stat-focus').textContent = step.focus;
 
+    // Step counter
+    const rs = plan.roundSteps.length;
+    const mr = plan.maxRounds;
+    const total = 1 + mr * rs + (mr - 1) + 1;
+    let current = 1;
+    if (currentPhase === 'warmup') current = 1;
+    else if (currentPhase === 'round') current = 1 + (currentRound - 1) * (rs + 1) + currentStepIdx + 1;
+    else if (currentPhase === 'roundbreak') current = 1 + currentRound * (rs + 1);
+    else current = total;
+    document.getElementById('stat-step').textContent = current + '/' + total;
+
+    // Badge
     const badge = document.getElementById('phase-badge');
-    badge.textContent = step.phaseName;
+    if (currentPhase === 'round') {
+        badge.textContent = `Runde ${currentRound}/${mr}`;
+    } else {
+        badge.textContent = step.phaseName;
+    }
     badge.className = 'phase-badge badge-' + step.phase;
 
-    document.getElementById('btn-prev').disabled = currentStepIdx === 0;
-    document.getElementById('btn-next').textContent = currentStepIdx === plan.steps.length - 1 ? 'Fertig ✓' : 'Weiter →';
+    // Prev button
+    document.getElementById('btn-prev').disabled = currentPhase === 'warmup';
+
+    // Next button label
+    const isLast = currentPhase === 'cooldown';
+    document.getElementById('btn-next').textContent = isLast ? 'Fertig ✓' : 'Weiter →';
+    document.getElementById('btn-next').onclick = nextStep;
+
+    // Timer button
+    if (currentPhase === 'roundbreak') {
+        const btn = document.getElementById('btn-timer');
+        btn.className = 'workout-btn btn-full btn-primary';
+        btn.textContent = currentRound < plan.maxRounds ? 'Weiter geht\'s! →' : 'Zum Cool-down →';
+        btn.onclick = startNextRound;
+    } else {
+        document.getElementById('btn-timer').onclick = toggleTimer;
+        setTimerBtn('start');
+    }
+
+    // Side-switch hint
+    const hint = document.getElementById('side-switch-hint');
+    if (step.sideSwitch) {
+        hint.style.display = 'block';
+        hint.textContent = 'Seitenwechsel bei Halbzeit';
+    } else {
+        hint.style.display = 'none';
+    }
 
     if (!isRunning) {
         timeLeft = step.duration;
         updateTimerDisplay(timeLeft);
         document.getElementById('progress-bar').style.width = '0%';
-        setTimerBtn('start');
     }
 }
 
@@ -445,19 +505,43 @@ function toggleTimer() {
         isRunning = true;
         setTimerBtn('pause');
         requestWakeLock();
-        const total = plans[currentPlanKey].steps[currentStepIdx].duration;
+        const step = getCurrentStep();
+        const total = step.duration;
+        const halfTime = Math.floor(total / 2);
         timerInterval = setInterval(() => {
             timeLeft--;
             updateTimerDisplay(timeLeft);
             const pct = ((total - timeLeft) / total) * 100;
             document.getElementById('progress-bar').style.width = pct + '%';
-            if (timeLeft > 0 && timeLeft <= 3) playBeep(440, 0.1);
+
+            // Side-switch at halfway
+            if (step.sideSwitch && timeLeft === halfTime && !sideSwitchFired) {
+                sideSwitchFired = true;
+                playSideSwitch();
+                const hint = document.getElementById('side-switch-hint');
+                hint.textContent = 'JETZT SEITE WECHSELN!';
+                hint.style.color = 'var(--orange)';
+                setTimeout(() => {
+                    hint.textContent = 'Seitenwechsel bei Halbzeit';
+                    hint.style.color = '';
+                }, 3000);
+            }
+
+            // Countdown beeps last 5 sec
+            if (timeLeft > 0 && timeLeft <= 5) {
+                playCountdownTick();
+                document.getElementById('timer-display').style.color = timeLeft <= 3 ? 'var(--red)' : 'var(--yellow)';
+            } else {
+                document.getElementById('timer-display').style.color = 'var(--text)';
+            }
+
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 isRunning = false;
+                document.getElementById('timer-display').style.color = 'var(--text)';
                 vibrate();
-                playBeep(880, 0.5);
-                nextStep();
+                playFinalBeep();
+                setTimeout(nextStep, 400);
             }
         }, 1000);
     }
@@ -472,17 +556,52 @@ function stopTimer() {
 function nextStep() {
     stopTimer();
     const plan = plans[currentPlanKey];
-    if (currentStepIdx < plan.steps.length - 1) {
-        currentStepIdx++;
-        updateUI();
-    } else {
-        showFinished();
+    if (currentPhase === 'warmup') {
+        currentPhase = 'round'; currentStepIdx = 0;
+    } else if (currentPhase === 'round') {
+        if (currentStepIdx < plan.roundSteps.length - 1) {
+            currentStepIdx++;
+        } else {
+            currentPhase = 'roundbreak';
+        }
+    } else if (currentPhase === 'roundbreak') {
+        startNextRound(); return;
+    } else if (currentPhase === 'cooldown') {
+        showFinished(); return;
     }
+    updateUI();
+}
+
+function startNextRound() {
+    stopTimer();
+    const plan = plans[currentPlanKey];
+    if (currentRound < plan.maxRounds) {
+        currentRound++;
+        currentPhase = 'round';
+        currentStepIdx = 0;
+    } else {
+        currentPhase = 'cooldown';
+    }
+    document.getElementById('btn-timer').onclick = toggleTimer;
+    updateUI();
 }
 
 function prevStep() {
     stopTimer();
-    if (currentStepIdx > 0) { currentStepIdx--; updateUI(); }
+    if (currentPhase === 'warmup') return;
+    const plan = plans[currentPlanKey];
+    if (currentPhase === 'round') {
+        if (currentStepIdx > 0) currentStepIdx--;
+        else if (currentRound > 1) { currentPhase = 'roundbreak'; currentRound--; }
+        else currentPhase = 'warmup';
+    } else if (currentPhase === 'roundbreak') {
+        currentPhase = 'round';
+        currentStepIdx = plan.roundSteps.length - 1;
+    } else if (currentPhase === 'cooldown') {
+        currentPhase = 'roundbreak';
+    }
+    document.getElementById('btn-timer').onclick = toggleTimer;
+    updateUI();
 }
 
 function showFinished() {
@@ -494,9 +613,14 @@ function showFinished() {
     document.getElementById('exercise-desc').textContent = 'Training erfolgreich beendet. Dein Körper wird es dir danken!';
     document.getElementById('timer-display').textContent = '00:00';
     document.getElementById('progress-bar').style.width = '100%';
+    document.getElementById('side-switch-hint').style.display = 'none';
     document.getElementById('btn-timer').classList.add('hidden');
     document.getElementById('btn-next').textContent = 'Zurück zum Start';
-    document.getElementById('btn-next').onclick = () => { goBack('profile'); document.getElementById('btn-next').onclick = nextStep; document.getElementById('btn-timer').classList.remove('hidden'); };
+    document.getElementById('btn-next').onclick = () => {
+        goBack('profile');
+        document.getElementById('btn-next').onclick = nextStep;
+        document.getElementById('btn-timer').classList.remove('hidden');
+    };
 }
 
 function updateTimerDisplay(s) {
@@ -510,24 +634,38 @@ function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-function playBeep(freq, dur) {
+function playBeep(freq, dur, vol, type) {
     if (!document.getElementById('sound-toggle').checked) return;
+    vol = vol || 0.7; type = type || 'square';
     try {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + dur);
         osc.connect(gain); gain.connect(audioCtx.destination);
         osc.start(); osc.stop(audioCtx.currentTime + dur);
     } catch(e) {}
 }
 
+function playCountdownTick() { playBeep(660, 0.12, 0.6, 'square'); }
+
+function playSideSwitch() {
+    // Two medium pips – distinct from countdown
+    playBeep(880, 0.12, 0.8, 'triangle');
+    setTimeout(() => playBeep(880, 0.2, 0.8, 'triangle'), 160);
+}
+
+function playFinalBeep() {
+    playBeep(1100, 0.08, 1.0, 'square');
+    setTimeout(() => playBeep(1100, 0.08, 1.0, 'square'), 100);
+    setTimeout(() => playBeep(1400, 0.35, 1.0, 'square'), 220);
+}
+
 function playDone() {
     if (!audioCtx) return;
-    [523.25, 659.25, 783.99].forEach((f, i) => {
-        setTimeout(() => playBeep(f, 0.3), i * 180);
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        setTimeout(() => playBeep(f, 0.25, 0.8, 'triangle'), i * 150);
     });
 }
 
@@ -548,6 +686,7 @@ function releaseWakeLock() {
     if (wakeLock) { wakeLock.release(); wakeLock = null; }
     document.getElementById('wakelock-note').classList.remove('wakelock-active');
 }
+
 </script>
 </body>
 </html>
