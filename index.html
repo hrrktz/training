@@ -3,544 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kettlebell 30-Min Workout Tracker</title>
+    <title>Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --primary-color: #00adb5;
-            --text-color: #eeeeee;
-            --text-muted: #888888;
-            --accent-warm: #ff5722;
-            --accent-cool: #3f51b5;
-            --success-color: #4caf50;
+            --bg: #0d0d0d;
+            --surface: #1a1a1a;
+            --surface2: #242424;
+            --border: #2e2e2e;
+            --text: #f0f0f0;
+            --muted: #666;
+            --teal: #00c9b1;
+            --orange: #ff6b35;
+            --blue: #4a8fff;
+            --green: #3ecf72;
+            --red: #ff4757;
+            --yellow: #ffd166;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 16px;
-            overflow-x: hidden;
+            padding: 16px 16px 40px;
         }
+        .app { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 14px; }
 
-        .app-container {
-            width: 100%;
-            max-width: 450px;
+        /* PROFILE SCREEN */
+        .profile-screen { display: flex; flex-direction: column; gap: 14px; }
+        .app-title {
+            text-align: center;
+            padding: 24px 0 8px;
+        }
+        .app-title h1 {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .app-title p { font-size: 0.8rem; color: #444; margin-top: 4px; font-family: 'DM Mono', monospace; }
+        .profile-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'DM Mono', monospace;
+            text-align: center;
+        }
+        .profile-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .profile-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.1s;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-card:active { transform: scale(0.97); }
+        .profile-card.tobsi:hover, .profile-card.tobsi:focus { border-color: var(--orange); background: rgba(255,107,53,0.06); }
+        .profile-card.briddi:hover, .profile-card.briddi:focus { border-color: var(--teal); background: rgba(0,201,177,0.06); }
+        .profile-avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; font-weight: 700;
+            font-family: 'DM Mono', monospace;
+        }
+        .tobsi .profile-avatar { background: rgba(255,107,53,0.15); color: var(--orange); }
+        .briddi .profile-avatar { background: rgba(0,201,177,0.15); color: var(--teal); }
+        .profile-name { font-size: 1.2rem; font-weight: 700; }
+        .profile-meta { font-size: 0.78rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+        /* DAY SELECTOR (Briddi only) */
+        .day-selector { display: flex; flex-direction: column; gap: 10px; }
+        .back-btn {
+            background: none; border: none; color: var(--muted);
+            font-size: 0.85rem; font-family: 'DM Mono', monospace;
+            cursor: pointer; text-align: left; padding: 4px 0;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .back-btn:hover { color: var(--text); }
+        .day-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px 20px; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.1s;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .day-card:active { transform: scale(0.98); }
+        .day-card:hover { border-color: var(--teal); background: rgba(0,201,177,0.05); }
+        .day-card-left { display: flex; flex-direction: column; gap: 3px; }
+        .day-card-title { font-size: 1rem; font-weight: 700; }
+        .day-card-sub { font-size: 0.78rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+        .day-badge {
+            font-size: 0.7rem; font-family: 'DM Mono', monospace;
+            padding: 4px 10px; border-radius: 20px; font-weight: 500;
         }
 
-        header {
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
+        /* WORKOUT SCREEN */
+        .workout-screen { display: flex; flex-direction: column; gap: 14px; }
+        .workout-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0;
         }
-
-        header h1 {
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            letter-spacing: 0.5px;
+        .workout-title { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); }
+        .profile-chip {
+            font-size: 0.75rem; font-family: 'DM Mono', monospace;
+            padding: 4px 10px; border-radius: 20px; font-weight: 500;
         }
-
-        header p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
+        .chip-tobsi { background: rgba(255,107,53,0.15); color: var(--orange); }
+        .chip-briddi { background: rgba(0,201,177,0.15); color: var(--teal); }
 
         .card {
-            background-color: var(--surface-color);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px 20px;
             text-align: center;
-            transition: all 0.3s ease;
         }
-
         .phase-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; font-family: 'DM Mono', monospace; margin-bottom: 14px;
         }
+        .badge-warmup { background: rgba(255,209,102,0.15); color: var(--yellow); }
+        .badge-blocka { background: rgba(74,143,255,0.15); color: var(--blue); }
+        .badge-blockb { background: rgba(255,107,53,0.15); color: var(--orange); }
+        .badge-cooldown { background: rgba(102,102,102,0.2); color: var(--muted); }
+        .badge-pause { background: rgba(62,207,114,0.15); color: var(--green); }
+        .badge-tag1 { background: rgba(74,143,255,0.15); color: var(--blue); }
+        .badge-tag2 { background: rgba(255,107,53,0.15); color: var(--orange); }
+        .badge-tag3 { background: rgba(0,201,177,0.15); color: var(--teal); }
 
-        .badge-warmup { background-color: #ff9800; color: #000; }
-        .badge-blocka { background-color: var(--accent-cool); color: #fff; }
-        .badge-blockb { background-color: var(--accent-warm); color: #fff; }
-        .badge-cooldown { background-color: #607d8b; color: #fff; }
-
-        .exercise-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        .exercise-details {
-            font-size: 1.1rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .exercise-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-bottom: 20px;
-            min-height: 44px;
-        }
-
+        .exercise-title { font-size: 1.7rem; font-weight: 700; margin-bottom: 6px; line-height: 1.2; }
+        .exercise-details { font-size: 1rem; color: var(--teal); margin-bottom: 12px; font-weight: 500; font-family: 'DM Mono', monospace; }
+        .exercise-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; margin-bottom: 18px; min-height: 40px; }
         .timer-display {
-            font-size: 3.5rem;
-            font-weight: bold;
-            font-family: monospace;
-            margin: 15px 0;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+            font-size: 3.8rem; font-weight: 700; font-family: 'DM Mono', monospace;
+            color: var(--text); margin: 10px 0 16px; letter-spacing: -2px;
         }
+        .progress-wrap { width: 100%; height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { height: 100%; width: 0%; background: var(--teal); transition: width 0.25s linear; border-radius: 2px; }
 
-        .progress-container {
-            width: 100%;
-            height: 6px;
-            background-color: #333;
-            border-radius: 3px;
-            margin-bottom: 25px;
-            overflow: hidden;
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-full { grid-column: span 2; }
+        button.workout-btn {
+            border: 1px solid var(--border); border-radius: 12px;
+            padding: 14px 16px; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: background 0.15s, transform 0.1s;
+            font-family: 'DM Sans', sans-serif; display: flex;
+            align-items: center; justify-content: center; gap: 6px;
         }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: var(--primary-color);
-            transition: width 0.25s linear;
-        }
-
-        .btn-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        button {
-            border: none;
-            border-radius: 12px;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background-color: #333;
-            color: var(--text-color);
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: #000;
-        }
-
-        .btn-accent {
-            background-color: var(--accent-warm);
-            color: white;
-        }
-
-        .btn-full {
-            grid-column: span 2;
-        }
-
-        .sound-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+        button.workout-btn:active { transform: scale(0.97); }
+        .btn-ghost { background: var(--surface2); color: var(--muted); }
+        .btn-ghost:hover { color: var(--text); border-color: #444; }
+        .btn-primary { background: var(--teal); color: #000; border-color: var(--teal); }
+        .btn-primary:hover { background: #00e0c6; }
+        .btn-timer-start { background: var(--orange); color: #fff; border-color: var(--orange); }
+        .btn-timer-start:hover { background: #ff8255; }
+        .btn-timer-pause { background: var(--red); color: #fff; border-color: var(--red); }
+        .btn-timer-resume { background: var(--green); color: #000; border-color: var(--green); }
 
         .stats-row {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.2);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.9rem;
+            display: flex; justify-content: space-between;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 14px 18px;
         }
+        .stat { text-align: center; }
+        .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-family: 'DM Mono', monospace; display: block; margin-bottom: 4px; }
+        .stat-val { font-size: 1rem; font-weight: 700; font-family: 'DM Mono', monospace; }
 
-        .stats-item span {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
+        .sound-row {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 0.8rem; color: var(--muted); font-family: 'DM Mono', monospace;
         }
+        .sound-row input[type=checkbox] { accent-color: var(--teal); width: 14px; height: 14px; }
 
-        .stats-item strong {
-            font-size: 1.1rem;
-            color: #fff;
-        }
+        .wakelock-note { text-align: center; font-size: 0.72rem; color: #333; font-family: 'DM Mono', monospace; }
+        .wakelock-active { color: var(--green) !important; }
 
-        .wakelock-status {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        .wakelock-active {
-            color: var(--success-color);
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
+<div class="app" id="app">
 
-<div class="app-container">
-    <header>
-        <h1>Kettlebell HIIT Tracker</h1>
-        <p>30 Min Ganzkörper • Stark &amp; Fit</p>
-    </header>
+    <!-- PROFILE SCREEN -->
+    <div id="screen-profile" class="profile-screen">
+        <div class="app-title">
+            <h1>Training</h1>
+            <p>Wähle dein Profil</p>
+        </div>
+        <div class="profile-label">Wer trainiert heute?</div>
+        <div class="profile-cards">
+            <div class="profile-card tobsi" onclick="selectProfile('tobsi')" tabindex="0">
+                <div class="profile-avatar">T</div>
+                <div class="profile-name">Tobsi</div>
+                <div class="profile-meta">30 min · HIIT</div>
+            </div>
+            <div class="profile-card briddi" onclick="selectProfile('briddi')" tabindex="0">
+                <div class="profile-avatar">B</div>
+                <div class="profile-name">Briddi</div>
+                <div class="profile-meta">20 min · 3 Tage</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="card" id="workout-card">
-        <span id="phase-badge" class="phase-badge badge-warmup">Warm-up</span>
-        <div id="exercise-title" class="exercise-title">Mobilisation</div>
-        <div id="exercise-details" class="exercise-details">Dauer: 5:00 Min</div>
-        <div id="exercise-desc" class="exercise-desc">Locker auf der Stelle laufen, Arme kreisen, Kniebeugen &amp; Good Mornings ohne Gewicht machen.</div>
+    <!-- DAY SELECTOR (Briddi) -->
+    <div id="screen-days" class="day-selector hidden">
+        <button class="back-btn" onclick="goBack('profile')">← Zurück</button>
+        <div class="profile-label" style="text-align:left; margin-bottom:4px;">Briddi – Welcher Tag?</div>
+        <div class="day-card" onclick="startWorkout('briddi','tag1')">
+            <div class="day-card-left">
+                <div class="day-card-title">Tag 1</div>
+                <div class="day-card-sub">Beine & Rumpf</div>
+            </div>
+            <div class="day-badge" style="background:rgba(74,143,255,0.15);color:#4a8fff;">Kraft</div>
+        </div>
+        <div class="day-card" onclick="startWorkout('briddi','tag2')">
+            <div class="day-card-left">
+                <div class="day-card-title">Tag 2</div>
+                <div class="day-card-sub">Oberkörper & Stabilität</div>
+            </div>
+            <div class="day-badge" style="background:rgba(255,107,53,0.15);color:#ff6b35;">Oberkörper</div>
+        </div>
+        <div class="day-card" onclick="startWorkout('briddi','tag3')">
+            <div class="day-card-left">
+                <div class="day-card-title">Tag 3</div>
+                <div class="day-card-sub">Sanftes Ganzkörper</div>
+            </div>
+            <div class="day-badge" style="background:rgba(0,201,177,0.15);color:#00c9b1;">Aktiv</div>
+        </div>
+    </div>
 
-        <div class="timer-display" id="timer-display">05:00</div>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+    <!-- WORKOUT SCREEN -->
+    <div id="screen-workout" class="workout-screen hidden">
+        <div class="workout-header">
+            <button class="back-btn" onclick="goBack('select')" style="font-size:0.8rem;">← Abbrechen</button>
+            <span class="profile-chip" id="profile-chip">Tobsi</span>
         </div>
 
-        <div class="btn-grid">
-            <button id="btn-prev" class="btn-secondary" onclick="prevStep()">Zurück</button>
-            <button id="btn-next" class="btn-primary" onclick="nextStep()">Weiter</button>
-            <button id="btn-timer" class="btn-accent btn-full" onclick="toggleTimer()">Timer Starten</button>
+        <div class="card" id="workout-card">
+            <span class="phase-badge" id="phase-badge">Warm-up</span>
+            <div class="exercise-title" id="exercise-title">Laden...</div>
+            <div class="exercise-details" id="exercise-details"></div>
+            <div class="exercise-desc" id="exercise-desc"></div>
+            <div class="timer-display" id="timer-display">05:00</div>
+            <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+            <div class="btn-grid">
+                <button class="workout-btn btn-ghost" id="btn-prev" onclick="prevStep()">← Zurück</button>
+                <button class="workout-btn btn-primary" id="btn-next" onclick="nextStep()">Weiter →</button>
+                <button class="workout-btn btn-timer-start btn-full" id="btn-timer" onclick="toggleTimer()">Timer starten</button>
+            </div>
         </div>
 
-        <div class="sound-control">
+        <div class="stats-row">
+            <div class="stat">
+                <span class="stat-label">Schritt</span>
+                <span class="stat-val" id="stat-step">1/11</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Gesamt</span>
+                <span class="stat-val" id="stat-total">30 Min</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Fokus</span>
+                <span class="stat-val" id="stat-focus" style="font-size:0.8rem;">–</span>
+            </div>
+        </div>
+
+        <div class="sound-row">
             <input type="checkbox" id="sound-toggle" checked>
-            <label for="sound-toggle">🔊 Sound-Signale aktivieren (Countdown + Wechsel)</label>
+            <label for="sound-toggle">Sound-Signale aktiv</label>
         </div>
+        <div class="wakelock-note" id="wakelock-note">Display-Standby blockiert (aktiv beim Timer)</div>
     </div>
 
-    <div class="stats-row">
-        <div class="stats-item">
-            <span>Schritt</span>
-            <strong id="progress-text">1 / 11</strong>
-        </div>
-        <div class="stats-item">
-            <span>Gesamtzeit ca.</span>
-            <strong>30 Min</strong>
-        </div>
-        <div class="stats-item">
-            <span>Fokus</span>
-            <strong id="focus-text">Cardio &amp; Gelenke</strong>
-        </div>
-    </div>
-
-    <div class="wakelock-status" id="wakelock-status">
-        ✦ Display-Standby blockiert (aktiv beim Timer)
-    </div>
 </div>
-
 <script>
-    const workoutSteps = [
-        {
-            phase: 'warmup',
-            phaseName: 'Warm-up',
-            title: 'Allg. Aufwärmen',
-            details: 'Zeit: 5 Minuten',
-            desc: 'Laufen auf der Stelle, Armkreisen, lockere Kniebeugen, Ausfallschritte & Rumpfbeugen.',
-            duration: 300,
-            focus: 'Gelenke & Puls'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Block A: Runde 1/3',
-            title: '1. Goblet Squats',
-            details: '10–12 Wdh. | Gewicht: 10 kg',
-            desc: 'Kettlebell vor der Brust halten. Tief kontrolliert beugen, Knie nach außen schieben.',
-            duration: 45,
-            focus: 'Beine & Po'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Pause',
-            title: 'Verschnaufpause',
-            details: 'Dauer: 30 Sek.',
-            desc: 'Tief durchatmen, bereitmachen für Liegestütze.',
-            duration: 30,
-            focus: 'Erholung'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Block A: Runde 1/3',
-            title: '2. Liegestütze',
-            details: '8–12 Wdh. | Bodyweight',
-            desc: 'Körper steif wie ein Brett. Brust fast zum Boden bringen. Ggf. Hände erhöht aufstellen.',
-            duration: 45,
-            focus: 'Brust & Arme'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Pause',
-            title: 'Verschnaufpause',
-            details: 'Dauer: 30 Sek.',
-            desc: 'Kurze Erholung. Danach folgt Kreuzheben mit der 10 kg Kugel.',
-            duration: 30,
-            focus: 'Erholung'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Block A: Runde 1/3',
-            title: '3. Kreuzheben (Deadlift)',
-            details: '12 Wdh. | Gewicht: 10 kg',
-            desc: 'Bewegung aus der Hüfte. Rücken kerzengerade lassen. Po beim Aufstehen fest anspannen.',
-            duration: 45,
-            focus: 'Rückseite & Po'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Pause',
-            title: 'Verschnaufpause',
-            details: 'Dauer: 30 Sek.',
-            desc: 'Bereitmachen für einarmiges Rudern.',
-            duration: 30,
-            focus: 'Erholung'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Block A: Runde 1/3',
-            title: '4. Einarmiges Rudern',
-            details: '8–10 Wdh. pro Seite | 10 kg / 6 kg',
-            desc: 'Stabil nach vorne beugen. Ellenbogen eng am Körper nach oben/hinten ziehen.',
-            duration: 60,
-            focus: 'Oberer Rücken'
-        },
-        {
-            phase: 'blocka',
-            phaseName: 'Große Pause',
-            title: 'Rundenpause',
-            details: 'Dauer: 60 Sek.',
-            desc: 'Trink einen Schluck Wasser. Wiederhole diesen Zirkel noch 2 Mal selbstständig (Schritte im Kopf) oder nutze diese Struktur!',
-            duration: 60,
-            focus: 'Erholung'
-        },
-        {
-            phase: 'blockb',
-            phaseName: 'Block B: AMRAP',
-            title: 'Finisher (8 Min)',
-            details: 'Fortlaufender Timer für 8 Min',
-            desc: 'Wechsle eigenständig ab: 15 Kettlebell Swings (10kg) und danach 8 Overhead Presses (6kg) je Seite. So viele Runden wie möglich!',
-            duration: 480,
-            focus: 'Fettverbrennung'
-        },
-        {
-            phase: 'cooldown',
-            phaseName: 'Cool-down',
-            title: 'Dehnen & Erholen',
-            details: 'Dauer: 3–4 Min',
-            desc: 'Puls senken. Beine auslockern, Brust aktiv aufdehnen und tief in den Bauch einatmen.',
-            duration: 200,
-            focus: 'Regeneration'
-        }
-    ];
-
-    let currentStepIndex = 0;
-    let timerInterval = null;
-    let timeLeft = 0;
-    let isTimerRunning = false;
-    let wakeLock = null;
-    let audioCtx = null;
-
-    function initAudio() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
+const plans = {
+    tobsi: {
+        totalTime: '30 Min',
+        steps: [
+            { phase:'warmup', phaseName:'Warm-up', title:'Allg. Aufwärmen', details:'Zeit: 5 Minuten', desc:'Laufen auf der Stelle, Armkreisen, lockere Kniebeugen, Ausfallschritte & Rumpfbeugen.', duration:300, focus:'Gelenke & Puls' },
+            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'1. Goblet Squats', details:'10–12 Wdh. · 10 kg', desc:'Kettlebell vor der Brust halten. Tief kontrolliert beugen, Knie nach außen schieben.', duration:45, focus:'Beine & Po' },
+            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Tief durchatmen, bereitmachen für Liegestütze.', duration:30, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'2. Liegestütze', details:'8–12 Wdh. · Bodyweight', desc:'Körper steif wie ein Brett. Brust fast zum Boden bringen. Ggf. Hände erhöht aufstellen.', duration:45, focus:'Brust & Arme' },
+            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Kurze Erholung. Danach folgt Kreuzheben mit der 10 kg Kugel.', duration:30, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'3. Kreuzheben', details:'12 Wdh. · 10 kg', desc:'Bewegung aus der Hüfte. Rücken kerzengerade lassen. Po beim Aufstehen fest anspannen.', duration:45, focus:'Rückseite & Po' },
+            { phase:'pause', phaseName:'Pause', title:'Verschnaufpause', details:'30 Sek.', desc:'Bereitmachen für einarmiges Rudern.', duration:30, focus:'Erholung' },
+            { phase:'blocka', phaseName:'Block A · Runde 1/3', title:'4. Einarmiges Rudern', details:'8–10 Wdh. pro Seite · 10 kg / 6 kg', desc:'Stabil nach vorne beugen. Ellenbogen eng am Körper nach oben/hinten ziehen.', duration:60, focus:'Oberer Rücken' },
+            { phase:'pause', phaseName:'Rundenpause', title:'Große Rundenpause', details:'60 Sek.', desc:'Trink einen Schluck Wasser. Danach Block A noch 2× wiederholen (Schritte 2–8).', duration:60, focus:'Erholung' },
+            { phase:'blockb', phaseName:'Block B · AMRAP', title:'Finisher (8 Min)', details:'Fortlaufender Timer · 8 Min', desc:'Wechsle ab: 15 KB-Swings (10 kg) → 8 Overhead Presses je Seite (6 kg). So viele Runden wie möglich!', duration:480, focus:'Fettverbrennung' },
+            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen & Erholen', details:'3–4 Min', desc:'Puls senken. Beine auslockern, Brust aufdehnen, tief in den Bauch einatmen.', duration:200, focus:'Regeneration' }
+        ]
+    },
+    briddi_tag1: {
+        totalTime: '20 Min',
+        steps: [
+            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Arme kreisen.', duration:120, focus:'Vorbereitung' },
+            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'1. KB Kreuzheben', details:'10–12 Wdh.', desc:'Hüfte nach hinten schieben, Rücken gerade. Kraft kommt aus Po und Beinen. Kettlebell zwischen den Füßen.', duration:40, focus:'Po & Rückseite' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'2. Liegestütze erhöht', details:'8–10 Wdh.', desc:'Hände auf Couch oder Wand. Körper bildet eine gerade Linie. Bauch fest anspannen.', duration:40, focus:'Brust & Schultern' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'3. Goblet Squat', details:'8–10 Wdh.', desc:'Kettlebell eng vor der Brust halten. Tief in die Kniebeuge gehen, aufrechter Rücken.', duration:40, focus:'Oberschenkel & Rumpf' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag1', phaseName:'Tag 1 · Beine & Rumpf', title:'4. Tote Käfer', details:'5× pro Seite', desc:'Rückenlage, Rücken platt auf Boden drücken. Diagonal Arm und Bein strecken, knapp über dem Boden halten.', duration:40, focus:'Bauch & Stabilität' },
+            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
+            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Tief durchatmen, Beine auslockern, Rücken dehnen.', duration:150, focus:'Regeneration' }
+        ]
+    },
+    briddi_tag2: {
+        totalTime: '20 Min',
+        steps: [
+            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Schultern kreisen, Hüfte kreisen, locker bewegen.', duration:120, focus:'Vorbereitung' },
+            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'1. Einarm. KB-Rudern', details:'10 Wdh. pro Seite', desc:'Ausfallschritt, eine Hand stützt sich ab. Rücken gerade, Ellenbogen nah am Körper Richtung Bauchnabel ziehen.', duration:50, focus:'Oberer Rücken' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'2. Beckenheben', details:'12–15 Wdh.', desc:'Rückenlage, Füße aufstellen. Becken hochdrücken und Po oben kurz fest anspannen.', duration:40, focus:'Po & Hüfte' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'3. KB Halo', details:'6× pro Richtung', desc:'Aufrechter Stand, Bauch fest. Kettlebell eng wie einen Heiligenschein um den Kopf kreisen lassen.', duration:40, focus:'Schultern & Mobilität' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag2', phaseName:'Tag 2 · Oberkörper', title:'4. Unterarmstütz', details:'20–30 Sek. halten', desc:'Auf Unterarmen und Fußspitzen stützen. Kein Hohlkreuz, Bauch aktiv einziehen. Atmen nicht vergessen!', duration:30, focus:'Core & Rumpf' },
+            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
+            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Brust aufdehnen, Schultern lockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
+        ]
+    },
+    briddi_tag3: {
+        totalTime: '20 Min',
+        steps: [
+            { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Hüfte kreisen, sanft mobilisieren.', duration:120, focus:'Vorbereitung' },
+            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'1. Ausfallschritte hinten', details:'8× pro Bein', desc:'Großer Schritt nach hinten, hinteres Knie Richtung Boden senken. Nach hinten ist knieschonender als nach vorne.', duration:50, focus:'Beine & Balance' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'2. KB Koffer-Tragen', details:'30 Sek. pro Seite', desc:'Kettlebell in einer Hand wie einen schweren Koffer. Langsam gehen, Oberkörper bleibt völlig gerade – nicht zur Seite kippen.', duration:30, focus:'Seitliche Bauchmuskulatur' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Seite wechseln, kurz pausieren.', duration:30, focus:'Erholung' },
+            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'3. Bird-Dog', details:'8× pro Seite', desc:'Auf Händen und Knien. Gleichzeitig rechten Arm und linkes Bein kontrolliert in die Länge strecken. Kurz halten, zurückführen.', duration:50, focus:'Rücken & Stabilität' },
+            { phase:'pause', phaseName:'Pause', title:'Pause', details:'30 Sek.', desc:'Kurz verschnaufen.', duration:30, focus:'Erholung' },
+            { phase:'tag3', phaseName:'Tag 3 · Ganzkörper', title:'4. KB Schlaufe (8er)', details:'45 Sek.', desc:'Weite Kniebeugen-Position. Kettlebell in Achterschleife durch die Beine führen und von Hand zu Hand übergeben.', duration:45, focus:'Koordination & Beine' },
+            { phase:'pause', phaseName:'Rundenpause', title:'Rundenpause (3 Runden)', details:'60–90 Sek.', desc:'Wasser trinken. Diesen Zirkel noch 2× wiederholen.', duration:75, focus:'Erholung' },
+            { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Puls senken, Beine auslockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
+        ]
     }
+};
 
-    function playBeep(frequency, duration, type = 'sine') {
-        if (!document.getElementById('sound-toggle').checked) return;
-        try {
-            initAudio();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+let currentProfile = null;
+let currentPlanKey = null;
+let currentStepIdx = 0;
+let timerInterval = null;
+let timeLeft = 0;
+let isRunning = false;
+let wakeLock = null;
+let audioCtx = null;
 
-            oscillator.type = type;
-            oscillator.frequency.value = frequency;
-            
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+function showScreen(id) {
+    ['screen-profile','screen-days','screen-workout'].forEach(s => {
+        document.getElementById(s).classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+}
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + duration);
-        } catch (e) {
-            console.log("Audio play blocked:", e);
-        }
+function selectProfile(who) {
+    currentProfile = who;
+    if (who === 'tobsi') {
+        startWorkout('tobsi', null);
+    } else {
+        showScreen('screen-days');
     }
+}
 
+function startWorkout(profile, day) {
+    currentProfile = profile;
+    currentPlanKey = profile === 'tobsi' ? 'tobsi' : ('briddi_' + day);
+    currentStepIdx = 0;
+    stopTimer();
+    showScreen('screen-workout');
+    const chip = document.getElementById('profile-chip');
+    chip.textContent = profile === 'tobsi' ? 'Tobsi' : 'Briddi';
+    chip.className = 'profile-chip ' + (profile === 'tobsi' ? 'chip-tobsi' : 'chip-briddi');
+    document.getElementById('stat-total').textContent = plans[currentPlanKey].totalTime;
     updateUI();
+}
 
-    function updateUI() {
-        const step = workoutSteps[currentStepIndex];
-        
-        document.getElementById('exercise-title').innerText = step.title;
-        document.getElementById('exercise-details').innerText = step.details;
-        document.getElementById('exercise-desc').innerText = step.desc;
-        document.getElementById('progress-text').innerText = `${currentStepIndex + 1} / ${workoutSteps.length}`;
-        document.getElementById('focus-text').innerText = step.focus;
-        
-        const badge = document.getElementById('phase-badge');
-        badge.innerText = step.phaseName;
-        badge.className = 'phase-badge';
-        badge.classList.add(`badge-${step.phase}`);
-
-        document.getElementById('btn-prev').disabled = currentStepIndex === 0;
-        
-        if (currentStepIndex === workoutSteps.length - 1) {
-            document.getElementById('btn-next').innerText = "Fertig!";
-        } else {
-            document.getElementById('btn-next').innerText = "Weiter";
-        }
-
-        if (!isTimerRunning) {
-            timeLeft = step.duration;
-            formatTimerDisplay(timeLeft);
-            document.getElementById('progress-bar').style.width = '0%';
-            document.getElementById('btn-timer').innerText = "Timer Starten";
-            document.getElementById('btn-timer').style.backgroundColor = "var(--accent-warm)";
-        }
+function goBack(to) {
+    stopTimer();
+    if (to === 'profile') showScreen('screen-profile');
+    else if (to === 'select') {
+        if (currentProfile === 'briddi') showScreen('screen-days');
+        else showScreen('screen-profile');
     }
+}
 
-    function formatTimerDisplay(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        document.getElementById('timer-display').innerText = 
-            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+function updateUI() {
+    const plan = plans[currentPlanKey];
+    const step = plan.steps[currentStepIdx];
+    document.getElementById('exercise-title').textContent = step.title;
+    document.getElementById('exercise-details').textContent = step.details;
+    document.getElementById('exercise-desc').textContent = step.desc;
+    document.getElementById('stat-step').textContent = (currentStepIdx + 1) + '/' + plan.steps.length;
+    document.getElementById('stat-focus').textContent = step.focus;
+
+    const badge = document.getElementById('phase-badge');
+    badge.textContent = step.phaseName;
+    badge.className = 'phase-badge badge-' + step.phase;
+
+    document.getElementById('btn-prev').disabled = currentStepIdx === 0;
+    document.getElementById('btn-next').textContent = currentStepIdx === plan.steps.length - 1 ? 'Fertig ✓' : 'Weiter →';
+
+    if (!isRunning) {
+        timeLeft = step.duration;
+        updateTimerDisplay(timeLeft);
+        document.getElementById('progress-bar').style.width = '0%';
+        setTimerBtn('start');
     }
+}
 
-    function toggleTimer() {
-        initAudio();
+function setTimerBtn(state) {
+    const btn = document.getElementById('btn-timer');
+    btn.className = 'workout-btn btn-full';
+    if (state === 'start') { btn.className += ' btn-timer-start'; btn.textContent = 'Timer starten'; }
+    else if (state === 'pause') { btn.className += ' btn-timer-pause'; btn.textContent = 'Pause'; }
+    else if (state === 'resume') { btn.className += ' btn-timer-resume'; btn.textContent = 'Timer fortsetzen'; }
+}
 
-        if (isTimerRunning) {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            document.getElementById('btn-timer').innerText = "Timer Fortsetzen";
-            document.getElementById('btn-timer').style.backgroundColor = "var(--success-color)";
-            releaseWakeLock();
-        } else {
-            isTimerRunning = true;
-            document.getElementById('btn-timer').innerText = "Pause";
-            document.getElementById('btn-timer').style.backgroundColor = "#e91e63";
-            requestWakeLock();
-
-            const totalDuration = workoutSteps[currentStepIndex].duration;
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                formatTimerDisplay(timeLeft);
-                
-                const percent = ((totalDuration - timeLeft) / totalDuration) * 100;
-                document.getElementById('progress-bar').style.width = `${percent}%`;
-
-                if (timeLeft > 0 && timeLeft <= 3) {
-                    playBeep(440, 0.1, 'sine');
-                }
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    isTimerRunning = false;
-                    vibratePhone();
-                    playBeep(880, 0.5, 'triangle');
-                    nextStep();
-                }
-            }, 1000);
-        }
-    }
-
-    function nextStep() {
-        if (isTimerRunning) {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-        }
-        
-        if (currentStepIndex < workoutSteps.length - 1) {
-            currentStepIndex++;
-            updateUI();
-        } else {
-            alert("Großartige Arbeit! Workout erfolgreich beendet. Bleib stark!");
-            currentStepIndex = 0;
-            updateUI();
-        }
-    }
-
-    function prevStep() {
-        if (isTimerRunning) {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-        }
-        
-        if (currentStepIndex > 0) {
-            currentStepIndex--;
-            updateUI();
-        }
-    }
-
-    function vibratePhone() {
-        if ('vibrate' in navigator) {
-            navigator.vibrate([400, 200, 400]);
-        }
-    }
-
-    async function requestWakeLock() {
-        if ('wakeLock' in navigator) {
-            try {
-                wakeLock = await navigator.wakeLock.request('screen');
-                document.getElementById('wakelock-status').classList.add('wakelock-active');
-            } catch (err) {
-                console.log(`${err.name}, ${err.message}`);
+function toggleTimer() {
+    initAudio();
+    if (isRunning) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        setTimerBtn('resume');
+        releaseWakeLock();
+    } else {
+        isRunning = true;
+        setTimerBtn('pause');
+        requestWakeLock();
+        const total = plans[currentPlanKey].steps[currentStepIdx].duration;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay(timeLeft);
+            const pct = ((total - timeLeft) / total) * 100;
+            document.getElementById('progress-bar').style.width = pct + '%';
+            if (timeLeft > 0 && timeLeft <= 3) playBeep(440, 0.1);
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                vibrate();
+                playBeep(880, 0.5);
+                nextStep();
             }
-        }
+        }, 1000);
     }
+}
 
-    function releaseWakeLock() {
-        if (wakeLock !== null) {
-            wakeLock.release();
-            wakeLock = null;
-            document.getElementById('wakelock-status').classList.remove('wakelock-active');
-        }
+function stopTimer() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    releaseWakeLock();
+}
+
+function nextStep() {
+    stopTimer();
+    const plan = plans[currentPlanKey];
+    if (currentStepIdx < plan.steps.length - 1) {
+        currentStepIdx++;
+        updateUI();
+    } else {
+        showFinished();
     }
+}
+
+function prevStep() {
+    stopTimer();
+    if (currentStepIdx > 0) { currentStepIdx--; updateUI(); }
+}
+
+function showFinished() {
+    playDone();
+    document.getElementById('phase-badge').textContent = 'Geschafft!';
+    document.getElementById('phase-badge').className = 'phase-badge badge-cooldown';
+    document.getElementById('exercise-title').textContent = 'Super gemacht!';
+    document.getElementById('exercise-details').textContent = '';
+    document.getElementById('exercise-desc').textContent = 'Training erfolgreich beendet. Dein Körper wird es dir danken!';
+    document.getElementById('timer-display').textContent = '00:00';
+    document.getElementById('progress-bar').style.width = '100%';
+    document.getElementById('btn-timer').classList.add('hidden');
+    document.getElementById('btn-next').textContent = 'Zurück zum Start';
+    document.getElementById('btn-next').onclick = () => { goBack('profile'); document.getElementById('btn-next').onclick = nextStep; document.getElementById('btn-timer').classList.remove('hidden'); };
+}
+
+function updateTimerDisplay(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    document.getElementById('timer-display').textContent =
+        m.toString().padStart(2,'0') + ':' + sec.toString().padStart(2,'0');
+}
+
+function initAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playBeep(freq, dur) {
+    if (!document.getElementById('sound-toggle').checked) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + dur);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + dur);
+    } catch(e) {}
+}
+
+function playDone() {
+    if (!audioCtx) return;
+    [523.25, 659.25, 783.99].forEach((f, i) => {
+        setTimeout(() => playBeep(f, 0.3), i * 180);
+    });
+}
+
+function vibrate() {
+    if ('vibrate' in navigator) navigator.vibrate([300, 150, 300]);
+}
+
+async function requestWakeLock() {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            document.getElementById('wakelock-note').classList.add('wakelock-active');
+        } catch(e) {}
+    }
+}
+
+function releaseWakeLock() {
+    if (wakeLock) { wakeLock.release(); wakeLock = null; }
+    document.getElementById('wakelock-note').classList.remove('wakelock-active');
+}
 </script>
 </body>
 </html>
