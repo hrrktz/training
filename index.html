@@ -315,37 +315,38 @@ const plans = {
         cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen & Erholen', details:'3–4 Min', desc:'Puls senken. Beine auslockern, Brust aufdehnen, tief in den Bauch einatmen.', duration:200, focus:'Regeneration' }
     },
     briddi_tag1: {
-        totalTime: '20 Min',
-        maxRounds: 3,
+        totalTime: '20 Min', maxRounds: 3,
         roundSteps: [
             { phase:'tag1', phaseName:'Tag 1', title:'1. KB Kreuzheben', details:'10–12 Wdh.', desc:'Hüfte nach hinten schieben, Rücken gerade. Kraft kommt aus Po und Beinen. KB zwischen den Füßen.', duration:40, focus:'Po & Rückseite' },
             { phase:'tag1', phaseName:'Tag 1', title:'2. Liegestütze erhöht', details:'8–10 Wdh.', desc:'Hände auf Couch oder Wand. Körper bildet eine gerade Linie. Bauch fest anspannen.', duration:40, focus:'Brust & Schultern' },
             { phase:'tag1', phaseName:'Tag 1', title:'3. Goblet Squat', details:'8–10 Wdh.', desc:'KB eng vor der Brust halten. Tief in die Kniebeuge gehen, aufrechter Rücken.', duration:40, focus:'Oberschenkel & Rumpf' },
-            { phase:'tag1', phaseName:'Tag 1', title:'4. Tote Käfer', details:'5× pro Seite', desc:'Rückenlage, Rücken platt auf Boden drücken. Diagonal Arm und Bein strecken, knapp über dem Boden halten.', duration:40, focus:'Bauch & Stabilität', sideSwitch: true },
+            { phase:'tag1', phaseName:'Tag 1', title:'4. Glute Kickback', details:'10–12 Wdh. pro Seite', desc:'Vierfüßler. Ein Bein gestreckt nach hinten-oben heben, Po oben kurz anspannen. Rücken bleibt gerade.', duration:40, focus:'Po & Hüfte', sideSwitch:true },
+            { phase:'tag1', phaseName:'Tag 1', title:'5. Seitl. Beinheben', details:'12–15 Wdh. pro Seite', desc:'Seitlage, Körper gestreckt. Oberes Bein kontrolliert anheben und absenken. Hüfte bleibt stabil.', duration:40, focus:'Hüftstabilität', sideSwitch:true },
         ],
         warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Arme kreisen.', duration:120, focus:'Vorbereitung' },
-        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Tief durchatmen, Beine auslockern, Rücken dehnen.', duration:150, focus:'Regeneration' }
+        cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Tief einatmen, Beine auslockern, Rücken dehnen.', duration:150, focus:'Regeneration' }
     },
     briddi_tag2: {
-        totalTime: '20 Min',
-        maxRounds: 3,
+        totalTime: '20 Min', maxRounds: 3,
         roundSteps: [
-            { phase:'tag2', phaseName:'Tag 2', title:'1. Einarm. KB-Rudern', details:'10 Wdh. pro Seite', desc:'Ausfallschritt, eine Hand stützt sich ab. Rücken gerade, Ellenbogen nah am Körper Richtung Bauchnabel ziehen.', duration:50, focus:'Oberer Rücken', sideSwitch: true },
+            { phase:'tag2', phaseName:'Tag 2', title:'1. Einarm. KB-Rudern', details:'10 Wdh. pro Seite', desc:'Ausfallschritt, eine Hand stützt sich ab. Rücken gerade, Ellenbogen nah am Körper Richtung Bauchnabel ziehen.', duration:50, focus:'Oberer Rücken', sideSwitch:true },
             { phase:'tag2', phaseName:'Tag 2', title:'2. Beckenheben', details:'12–15 Wdh.', desc:'Rückenlage, Füße aufstellen. Becken hochdrücken und Po oben kurz fest anspannen.', duration:40, focus:'Po & Hüfte' },
             { phase:'tag2', phaseName:'Tag 2', title:'3. KB Halo', details:'6× pro Richtung', desc:'Aufrechter Stand, Bauch fest. KB eng wie einen Heiligenschein um den Kopf kreisen lassen.', duration:40, focus:'Schultern & Mobilität' },
             { phase:'tag2', phaseName:'Tag 2', title:'4. Unterarmstütz', details:'20–30 Sek. halten', desc:'Auf Unterarmen und Fußspitzen stützen. Kein Hohlkreuz, Bauch aktiv einziehen. Atmen nicht vergessen!', duration:30, focus:'Core & Rumpf' },
+            { phase:'tag2', phaseName:'Tag 2', title:'5. KB Floor Press', details:'8–10 Wdh. pro Seite', desc:'Rückenlage, KB einarmig nach oben drücken. Ellenbogen 45° vom Körper weg. Schulterblatt bleibt auf dem Boden.', duration:45, focus:'Brust & Trizeps', sideSwitch:true },
         ],
         warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Schultern kreisen, Hüfte kreisen, locker bewegen.', duration:120, focus:'Vorbereitung' },
         cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Brust aufdehnen, Schultern lockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
     },
     briddi_tag3: {
-        totalTime: '20 Min',
-        maxRounds: 3,
+        totalTime: '20 Min', maxRounds: 3,
         roundSteps: [
-            { phase:'tag3', phaseName:'Tag 3', title:'1. Ausfallschritte hinten', details:'8× pro Bein', desc:'Großer Schritt nach hinten, hinteres Knie Richtung Boden senken. Nach hinten ist knieschonender als nach vorne.', duration:50, focus:'Beine & Balance', sideSwitch: true },
-            { phase:'tag3', phaseName:'Tag 3', title:'2. KB Koffer-Tragen', details:'30 Sek. pro Seite', desc:'KB in einer Hand wie einen schweren Koffer. Langsam gehen, Oberkörper bleibt völlig gerade – nicht zur Seite kippen.', duration:30, focus:'Seitliche Bauchmuskulatur', sideSwitch: true },
-            { phase:'tag3', phaseName:'Tag 3', title:'3. Bird-Dog', details:'8× pro Seite', desc:'Auf Händen und Knien. Gleichzeitig rechten Arm und linkes Bein kontrolliert in die Länge strecken. Kurz halten, zurückführen.', duration:50, focus:'Rücken & Stabilität', sideSwitch: true },
-            { phase:'tag3', phaseName:'Tag 3', title:'4. KB Schlaufe (8er)', details:'45 Sek.', desc:'Weite Kniebeugen-Position. KB in Achterschleife durch die Beine führen und von Hand zu Hand übergeben.', duration:45, focus:'Koordination & Beine' },
+            { phase:'tag3', phaseName:'Tag 3', title:'1. Ausfallschritte hinten', details:'8× pro Bein', desc:'Großer Schritt nach hinten, hinteres Knie Richtung Boden senken. Nach hinten ist knieschonender als nach vorne.', duration:50, focus:'Beine & Balance', sideSwitch:true },
+            { phase:'tag3', phaseName:'Tag 3', title:'2. KB Koffer-Tragen', details:'30 Sek. pro Seite', desc:'KB in einer Hand wie einen schweren Koffer. Langsam gehen, Oberkörper bleibt völlig gerade – nicht zur Seite kippen.', duration:30, focus:'Seitl. Bauchmuskulatur', sideSwitch:true },
+            { phase:'tag3', phaseName:'Tag 3', title:'3. Bird-Dog', details:'8× pro Seite', desc:'Vierfüßler. Gleichzeitig rechten Arm und linkes Bein kontrolliert in die Länge strecken. Kurz halten, zurückführen.', duration:50, focus:'Rücken & Stabilität', sideSwitch:true },
+            { phase:'tag3', phaseName:'Tag 3', title:'4. KB Swing', details:'12–15 Wdh.', desc:'Explosive Hüftstreckung – Kraft kommt aus der Hüfte, nicht den Armen. KB zwischen die Beine pendeln, dann schnellen.', duration:45, focus:'Po & Cardio' },
+            { phase:'tag3', phaseName:'Tag 3', title:'5. KB Squat to Press', details:'8–10 Wdh.', desc:'Kniebeuge mit KB vor der Brust. Beim Aufstehen KB direkt über den Kopf drücken. Po und Bauch anspannen.', duration:45, focus:'Ganzkörper' },
+            { phase:'tag3', phaseName:'Tag 3', title:'6. Seitstütz', details:'20–30 Sek. pro Seite', desc:'Auf einer Hand oder Unterarm stützen. Hüfte oben halten, Körper bildet eine gerade Linie. Bauch fest.', duration:30, focus:'Seitliche Core', sideSwitch:true },
         ],
         warmup: { phase:'warmup', phaseName:'Warm-up', title:'Aufwärmen', details:'2 Minuten', desc:'Locker auf der Stelle gehen, Hüfte kreisen, sanft mobilisieren.', duration:120, focus:'Vorbereitung' },
         cooldown: { phase:'cooldown', phaseName:'Cool-down', title:'Dehnen', details:'2–3 Min', desc:'Puls senken, Beine auslockern, tief in den Bauch einatmen.', duration:150, focus:'Regeneration' }
